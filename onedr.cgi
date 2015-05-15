@@ -5,22 +5,11 @@ require 'cgi/html'
 
 require './keys.rb'
 
-
-
-################### HTML ########################
-print "Content-Type: text/html\n\n"
-
-puts "<html>"
-puts "<head><title>test</title></head>"
-puts "<body>"
-
-puts "<h1>HELLO</h1>"
-
-
+images = ""
 $client.search("#深夜の真剣お絵描き60分一本勝負 -rt", :lang=>"ja", :count=>10).take(10).collect do |tweet|
-	puts "<p>"
-	puts "#{tweet.user.screen_name}: #{tweet.text}"
-	puts "</p>"
+	images << "<p>"
+	images << "#{tweet.user.screen_name}: #{tweet.text}"
+	images << "</p>"
 	
 	if tweet.media? then
 		media_urls = tweet.media
@@ -28,11 +17,26 @@ $client.search("#深夜の真剣お絵描き60分一本勝負 -rt", :lang=>"ja",
 	media_urls.each do |url|
 		image = CGI.new("html4")
 		
-		puts image.img("#{url.media_uri_https}", "ワンドロ")
+		images << image.img("#{url.media_uri_https}", "ワンドロ")
 	end
 	end
 end
 
+################### HTML ########################
+print "Content-Type: text/html\n\n"
 
-puts "</body>"
-puts "</html>"
+puts <<HTML
+<html>
+<head>
+<title>test</title></head>
+<body>
+
+<h1>HELLO</h1>
+
+
+#{images}
+
+
+</body>
+</html>
+HTML

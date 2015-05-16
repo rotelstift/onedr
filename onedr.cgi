@@ -34,9 +34,12 @@ puts <<HTML
 	.slick-list {
 		height: 80%;
 	}
-	img {
+	a {
 		padding: 0px 150px;
 		//height: 600px;
+	}
+	img {
+		height: 100%;
 	}
 	--> 
 	</style>
@@ -57,15 +60,18 @@ puts <<HTML
   <script type="text/javascript" src="slick/slick.min.js"></script>
 <script type="text/javascript">
 $(function() {
-  var array = [
+  var img_ary = [
   	#{$images}
   ];
-  var l = array.length;
+  var url_ary = [
+  	#{$tweet_urls_with_images}
+  ];
+  
+  var l = img_ary.length;
   for (i = 0; i<l; i++) {
-	    //var r = Math.floor(Math.random()*l);
-    	var imgurl = array[i];
-    	$('.autoplay').append('<img src="'+imgurl+'" />');
-    	//$("img.randomimg"+i).attr({"src":imgurl});
+    	var imgurl = img_ary[i];
+    	var tweeturl = url_ary[i]
+    	$('.autoplay').append('<a href="'+tweeturl+'" target="_blank"><img src="'+imgurl+'" /></a>');
   }
     	
  $('.autoplay').slick({
@@ -77,16 +83,6 @@ $(function() {
     autoplaySpeed: 2000,
     lazyLoad: 'ondemand',
   });
-    	/*
-  setInterval( function (){
-  	for (i = 1; i<=5; i++) {
-	    var r = Math.floor(Math.random()*l);
-    	var imgurl = array[r];
-    	$("img.randomimg"+i).attr({"src":imgurl});
-    }
-    },10000);*/
-    
-    
   
 });
 </script>

@@ -1,7 +1,18 @@
 #!/usr/local/bin/ruby
 
 require 'twitter'
+require 'cgi'
 require 'cgi/html'
+
+cgi = CGI.new
+if cgi["t"] != "" then
+	$text = CGI.escapeHTML(cgi["t"])
+	if $text.start_with?("#") then
+		$text = $text.tr("#", "")
+	end
+else
+	$text = "深夜の真剣お絵かき60分一本勝負"
+end
 
 require './keys.rb'
 require './search_image.rb'
@@ -13,7 +24,7 @@ print "Content-Type: text/html\n\n"
 puts <<HTML
 <html>
 <head>
-<title>test</title>
+<title>##{$text}</title>
 
 <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
@@ -21,6 +32,13 @@ puts <<HTML
 	<!--
 	body {
 		background-color : #000000;
+	}
+	h1 {
+		text-align: center;
+	}
+	.form {
+		color : #ffffff;
+		text-align:center;
 	}
 	.content {
 	   margin : 50px;
@@ -47,7 +65,15 @@ puts <<HTML
 <body>
 
 
-<h1 style="text-align:center; color: #fff">#深夜の真剣お絵描き60分一本勝負</h1>
+<h1 style="color: #fff">##{$text}</h1>
+<form action="./onedr.cgi" method="get">
+<div class="form">
+<p>タグ名検索
+<input name="t" value="">
+
+<input type="submit" name="s" value="Button">
+</p></div>
+</form>
 <div class="content">
     <div class="slider autoplay center single-item add-remove">
 		
